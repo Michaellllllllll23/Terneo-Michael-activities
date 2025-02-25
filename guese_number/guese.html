@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <link rel="stylesheet" href="design.css">
+    <script>
+        const random = 300;
+    </script>
+    <script src="./js/guess.js"></script>
+</head>
+<body>
+
+    <div class="game-container">
+        <h2>Guess the Number</h2>
+        <div class="input-container">
+            <input type="number" id="guess" placeholder="Enter your guess">
+            <button type = "button" onclick ="checkNumber()">Guess</button>
+        </div>
+        <p id="message"><strong>Guess a number</strong></p>
+        <p id="tries">Tries: 5</p>
+    </div>
+
+</body>
+</html>
