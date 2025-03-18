@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card p-4" style="max-width: 380px; width: 100%;">
+            <h3 class="mb-3 text-center">Login</h3>
+            <p id="message" class="text-danger d-none text-center">Invalid Username or Password</p>
+            <form>
+                <div class="mb-3">
+                    <label for="uname" class="form-label">Username</label>
+                    <input type="text" id="uname" class="form-control" placeholder="Enter username">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Enter password">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+        <script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+    </div>
+</body>
+</html>
+
+  </nav>
+  <div class="container">
+    <div class="card p-4">
+      <div class="card-header">
+        <h2>Student List</h2>
+      </div>
+      <div class="d-flex justify-content-between mb-3">
+        <input type="text" class="form-control w-50 search-input" id="search" placeholder="Search Student..." onkeyup="searchStudent()">
+        <button class="btn btn-primary" onclick="openAddStudentModal()">+ Add Student</button>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped" id="studentTable">
+          <thead class="table-dark">
+            <tr>
+              <th>Student ID</th>
+              <th>Last Name</th>
+              <th>First Name</th>
+              <th>Middle Name</th>
+              <th>Course</th>
+              <th>Year</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="modal" id="addStudentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addStudentModalLabel">Add Student</h5>
+          <button type="button" class="btn-close" onclick="closeModal()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="studentForm">
+            <div class="mb-3">
+              <label for="studentId" class="form-label">Student ID</label>
+              <input type="text" class="form-control" id="studentId" required>
+            </div>
+            <div class="mb-3">
+              <label for="lastName" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="lastName" required>
+            </div>
+            <div class="mb-3">
+              <label for="firstName" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="firstName" required>
+            </div>
+            <div class="mb-3">
+              <label for="middleName" class="form-label">Middle Name</label>
+              <input type="text" class="form-control" id="middleName">
+            </div>
+            <div class="mb-3">
+              <label for="course" class="form-label">Course</label>
+              <input type="text" class="form-control" id="course" required>
+            </div>
+            <div class="mb-3">
+              <label for="year" class="form-label">Year</label>
+              <input type="text" class="form-control" id="year" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="submitBtn">Add Student</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="./bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let students = []; 
+    let editingIndex = -1;
+    function renderTable() {
+      const tbody = document.querySelector('#studentTable tbody');
+      tbody.innerHTML = '';
+      students.forEach((student, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${student.studentId}</td>
+          <td>${student.lastName}</td>
+          <td>${student.firstName}</td>
+          <td>${student.middleName}</td>
+          <td>${student.course}</td>
+          <td>${student.year}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" onclick="editStudent(${index})">Edit</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteStudent(${index})">Delete</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+    document.getElementById('studentForm').addEventListener('submit', function (event) {
+      event.preventDefault(); 
+
+      const student = {
+        studentId: document.getElementById('studentId').value,
+        lastName: document.getElementById('lastName').value,
+        firstName: document.getElementById('firstName').value,
+        middleName: document.getElementById('middleName').value,
+        course: document.getElementById('course').value,
+        year: document.getElementById('year').value,
+      };
+
+      if (editingIndex === -1) {
+        students.push(student);
+      } else {
+        students[editingIndex] = student;
+      }
+
+      renderTable();
+      document.getElementById('studentForm').reset();
+      closeModal();
+    });
+
+    function editStudent(index) {
+      const student = students[index];
+      document.getElementById('studentId').value = student.studentId;
+      document.getElementById('lastName').value = student.lastName;
+      document.getElementById('firstName').value = student.firstName;
+      document.getElementById('middleName').value = student.middleName;
+      document.getElementById('course').value = student.course;
+      document.getElementById('year').value = student.year;
+
+      document.getElementById('addStudentModalLabel').innerText = 'Edit Student';
+      document.getElementById('submitBtn').innerText = 'Update Student';
+
+      editingIndex = index;
+
+      document.getElementById('addStudentModal').style.display = 'block';
+    }
+
+    function deleteStudent(index) {
+      students.splice(index, 1); 
+      renderTable();
+    }
+
+    function openAddStudentModal() {
+      // Reset form and prepare for adding a new student
+      document.getElementById('addStudentModalLabel').innerText = 'Add Student';
+      document.getElementById('submitBtn').innerText = 'Add Student';
+      editingIndex = -1; // Reset editing index
+      document.getElementById('studentForm').reset();
+      
+     
+      document.getElementById('addStudentModal').style.display = 'block';
+    }
+
+    
+    function closeModal() {
+      document.getElementById('addStudentModal').style.display = 'none';
+    }
+  </script>
+</body>
+
+</html>
