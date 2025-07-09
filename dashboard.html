@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title">Dashboard</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-success h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Students</h5>
+                                <p class="card-text display-4">{{ student_count }}</p>
+                                <a href="{{ url_for('list_students') }}" class="text-white">View all students</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-info h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Add Student</h5>
+                                <p class="card-text">Add a new student record</p>
+                                <a href="{{ url_for('add_student') }}" class="text-white">Go to form</a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card text-white bg-warning h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">Account</h5>
+                                <p class="card-text">Manage your account</p>
+                                <a href="{{ url_for('change_password') }}" class="text-white">Change password</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
